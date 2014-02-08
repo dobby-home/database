@@ -441,4 +441,9 @@ class Kohana_Database_MySQL extends Database {
 		return "'$value'";
 	}
 
+    public function prepare($sql, $as_object = FALSE, array $params = NULL)
+    {
+
+    }
+
 } // End Database_MySQL
