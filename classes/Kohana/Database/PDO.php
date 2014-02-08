@@ -244,4 +244,47 @@ class Kohana_Database_PDO extends Database {
 		return $this->_connection->quote($value);
 	}
 
+    public function prepare($sql, $as_object = FALSE, array $params = NULL)
+    {
+
+
+        $this->_connection or $this->connect();
+
+        if (!empty($this->_config['profiling'])) {
+            // Benchmark this query for the current instance
+            $benchmark = Profiler::start("Database ({$this->_instance})", $sql);
+        }
+
+        try
+        {
+            $result = $this->_connection->prepare($sql);
+        }
+        catch (Exception $e)
+        {
+            if (isset($benchmark)) {
+                // This benchmark is worthless
+                Profiler::delete($benchmark);
+            }
+
+            // Convert the exception in a database exception
+            throw new Database_Exception(':error [ :query ]',
+                array(
+                    ':error' => $e->getMessage(),
+                    ':query' => $sql
+                ),
+                $e->getCode());
+        }
+
+        if (isset($benchmark)) {
+            Profiler::stop($benchmark);
+        }
+
+        // Set the last query
+        $this->last_query = $sql;
+
+
+
+        return new Database_Prepare($this->_connection,$sql);
+    }
+
 } // End Database_PDO

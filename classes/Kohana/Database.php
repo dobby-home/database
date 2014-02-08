@@ -723,4 +723,13 @@ abstract class Kohana_Database {
 	 */
 	abstract public function escape($value);
 
+
+    /**
+     * @param $sql
+     * @param bool $as_object
+     * @param array $params
+     * @return Database_Prepare
+     */
+    abstract public function prepare($sql, $as_object = FALSE, array $params = NULL);
+
 } // End Database_Connection
