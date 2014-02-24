@@ -123,4 +123,11 @@ class Kohana_Database_Prepare {
     public function rowCount() {
         return $this->_prepare->rowCount();
     }
+
+    /**
+     * @return string
+     */
+    public function lastInsertId() {
+        return $this->db->lastInsertId();
+    }
 }
